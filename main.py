@@ -7,15 +7,15 @@
 #   Description:
 
 import pygame
-import main_menu_animation as MA
 pygame.font.init()
 
 # initilizing the SCREENdow screen
 WIDTH, HEIGHT = 1000,900
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 BACKGROUND = (234, 212, 252)
-pygame.display.set_caption("Space Invader - Prithvi Rao")
+pygame.display.set_caption("Space Invader - Prithvi Rao")                                                                                       # ADD NAME
 
+# 
 run = True
 
 while run:
