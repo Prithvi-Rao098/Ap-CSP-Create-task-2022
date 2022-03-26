@@ -5,13 +5,13 @@ class Player(pygame.sprite.Sprite):
 		super().__init__()
 		self.attack_animation = False
 		self.sprites = []
-		self.sprites.append(pygame.image.load("assets",  "MC_P1.png"))
-		self.sprites.append(pygame.image.load("assets", "MC_P2.png"))
-		self.sprites.append(pygame.image.load("assets", "MC_P3.png"))
-		self.sprites.append(pygame.image.load("assets", "MC_P4.png"))
-		self.sprites.append(pygame.image.load("assets",  "MC_P5.png"))
-		self.sprites.append(pygame.image.load("assets",  "MC_P6.png"))
-		self.sprites.append(pygame.image.load("assets",  "MC_P7.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P1.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P2.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P3.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P4.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P5.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P6.png"))
+		self.sprites.append(pygame.image.load("assets", "MC", "MC_P7.png"))
 
 		self.current_sprite = 0
 		self.image = self.sprites[self.current_sprite]
