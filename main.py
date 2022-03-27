@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-
+import math
 pygame.font.init()
 
 
@@ -12,7 +12,7 @@ WIDTH, HEIGHT = 800, 1000
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("background.jpg")), (WIDTH, HEIGHT))
 MAINCHARACTER = pygame.transform.scale(pygame.image.load(os.path.join("MAINCHARACTER.png")), (55, 50))
-BULLET = pygame.transform.scale(pygame.image.load(os.path.join("bullet.png")), (20, 32))
+BULLET = pygame.transform.scale(pygame.image.load(os.path.join("bullet.png")), (30, 42))
 INVADER1 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (55, 50))
 INVADER2 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (75, 60))
 INVADER3 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (85, 70))
@@ -32,14 +32,14 @@ class Bullet:
     def __init__(self, x, y, img):
         self.x = x
         self.y = y
-        self.img = Bullet_image
-        self.mask = pygame.mask.from_surface(self.img)
+        self.bullet_img = Bullet_image
+        self.mask = pygame.mask.from_surface(self.bullet_img)
+    
+    def move(self, vel):
+        self.y += vel
 
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
-
-    def move(self, vel):
-        self.y += vel
 
     def off_screen(self, height):
         return not(self.y <= height and self.y >= 0)
@@ -52,7 +52,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 150
+    COOLDOWN = 50
 
     def __init__(self, x, y, health=100):
         self.x = x
@@ -122,6 +122,22 @@ class MainCharacter(Character):
         pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.MC_img.get_height() + 10, self.MC_img.get_width() * (self.health/self.max_health), 10))
 
 
+class Enemy(Character):
+
+    ENEMY_MAP = {
+                "small" : (Invader1_image),
+                "medium" : (Invader2_image),
+                "large" : (Invader3_image)
+    }
+
+    def __init__(self, x, y, type, health=2):
+        super().__init__(x,y,health)
+        self.INVADER_img= self.ENEMY_MAP[type]
+        self.mask = pygame.mask.from_surface(self.INVADER_img)
+
+    def move(self, vel):
+        self.y+= vel
+
 
 
 
@@ -136,16 +152,19 @@ def collide(obj1, obj2):
 
 # initializing the characters and the images
 run = True
-FPS = 65
-bullet_vel = 25
+FPS = 240
+bullet_vel = 15
 level = 0
 lives = 1
 player = Character(375, 900)
 enemies = []
+bullets = []
 player_vel = 1
+enemy_vel = 1
 main_font = pygame.font.SysFont("comicsans", 50)
 lost_font = pygame.font.SysFont("comicsans", 70)
 wave_length = 5
+num_loss = 0
 lost = False
 clock = pygame.time.Clock() 
 
@@ -156,11 +175,16 @@ def redraw_win():
     lives_show = main_font.render(f"lives: {lives}", 1, (0,0,255))
     level_show = main_font.render(f"level: {level}", 1, (255,0,0))
 
-    SCREEN.blit(lives_show, (10, 10))
-    SCREEN.blit(level_show, (10, 100))
+    SCREEN.blit(lives_show, (10, 600))
+    SCREEN.blit(level_show, (10, 800))
+
+    for enemy in enemies:
+        enemy.draw(SCREEN)
 
     player.draw(SCREEN)
-    
+    if lost:
+        lost_label=lost_font.render("YOU LOST !", 1 , (255,0,0))
+        SCREEN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
     
     pygame.display.update()
@@ -180,6 +204,20 @@ while run:
 
     if lives <= 0 or player.health <= 0:
         lost = True
+        num_loss += 1
+    if lost:
+        if num_loss > FPS * 3:
+            run = False
+        else:
+            continue 
+
+    if len(enemies) == 0:
+        level += 1
+        wave_length += 5
+        
+        for i in range(wave_length):
+            enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+            enemies.append(enemy)
 
         
     for event in pygame.event.get():
@@ -200,8 +238,15 @@ while run:
     if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:                                  #down
         player.y += player_vel
 
-    if keys[pygame.K_SPACE]:
+    if event.type == pygame.MOUSEBUTTONDOWN:
         player.shoot()
-
+    for enemy in enemies[:]:
+        enemy.move(enemy_vel)
+    if collide(enemy, player):
+        player.health -= 10
+        enemies.remove(enemy)
+    elif enemy.y + enemy.get_height() > HEIGHT:
+        lives -= 1
+        enemies.remove(enemy)
 
     player.move_bullets(-bullet_vel)
