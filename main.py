@@ -52,7 +52,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 60
+    COOLDOWN = 150
 
     def __init__(self, x, y, health=100):
         self.x = x
@@ -140,7 +140,7 @@ FPS = 65
 bullet_vel = 25
 level = 0
 lives = 1
-player = Character(900, 900)
+player = Character(375, 900)
 enemies = []
 player_vel = 1
 main_font = pygame.font.SysFont("comicsans", 50)
