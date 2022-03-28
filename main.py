@@ -19,9 +19,9 @@ INVADER3 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png"))
 
 MC_imge = pygame.transform.rotate(MAINCHARACTER, 90)
 Bullet_image = pygame.transform.rotate(BULLET,-90)
-Invader1_image = pygame.transform.rotate(BULLET,90)
-Invader2_image = pygame.transform.rotate(BULLET,90)
-Invader3_image = pygame.transform.rotate(BULLET,90)
+Invader1_image = pygame.transform.rotate(INVADER1,90)
+Invader2_image = pygame.transform.rotate(INVADER2,90)
+Invader3_image = pygame.transform.rotate(INVADER3,90)
 
 
 # ADD NAME
@@ -60,6 +60,10 @@ class Character:            # parent class for the defenders and invaders
         self.health = health
         self.MC_img = MC_imge             #pass later in the inheritence 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        self.INVADER_img = None
+>>>>>>> parent of 7a22173 (try to get invader to work)
         self.mask = pygame.mask.from_surface(self.MC_img)
 =======
         self.INVADER_img = None
@@ -221,10 +225,14 @@ while run:
         
         for i in range(wave_length):
 <<<<<<< HEAD
+<<<<<<< HEAD
             enemy = Enemy(random.randrange(290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
 =======
             enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
 >>>>>>> parent of a3c1989 (get enemies to collide)
+=======
+            enemy = Enemy(random.randrange(50, WIDTH-800), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+>>>>>>> parent of 7a22173 (try to get invader to work)
             enemies.append(enemy)
 
         
