@@ -39,7 +39,7 @@ class Bullet:
         self.y += vel
 
     def draw(self, window):
-        window.blit(self.bullet_img, (self.x, self.y))
+        window.blit(self.img, (self.x, self.y))
 
     def off_screen(self, height):
         return not(self.y <= height and self.y >= 0)
@@ -59,7 +59,11 @@ class Character:            # parent class for the defenders and invaders
         self.y = y
         self.health = health
         self.MC_img = MC_imge             #pass later in the inheritence 
+<<<<<<< HEAD
         self.mask = pygame.mask.from_surface(self.MC_img)
+=======
+        self.INVADER_img = None
+>>>>>>> parent of a3c1989 (get enemies to collide)
         self.bullet_img = Bullet_image        
         self.bullets = []                         #LIST FOR bulletS
         self.cool_down_counter = 0
@@ -160,7 +164,7 @@ player = Character(375, 900)
 enemies = []
 bullets = []
 player_vel = 1
-enemy_vel = 0.2
+enemy_vel = 1
 main_font = pygame.font.SysFont("comicsans", 50)
 lost_font = pygame.font.SysFont("comicsans", 70)
 wave_length = 5
@@ -216,7 +220,11 @@ while run:
         wave_length += 5
         
         for i in range(wave_length):
+<<<<<<< HEAD
             enemy = Enemy(random.randrange(290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+=======
+            enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+>>>>>>> parent of a3c1989 (get enemies to collide)
             enemies.append(enemy)
 
         
@@ -240,14 +248,13 @@ while run:
 
     if event.type == pygame.MOUSEBUTTONDOWN:
         player.shoot()
-    
     for enemy in enemies[:]:
         enemy.move(enemy_vel)
-        if collide(enemy, player):
-            player.health -= 10
-            enemies.remove(enemy)
-        elif enemy.y + enemy.get_height() > HEIGHT:
-            lives -= 1
-            enemies.remove(enemy)
+    if collide(enemy, player):
+        player.health -= 10
+        enemies.remove(enemy)
+    elif enemy.y + enemy.get_height() > HEIGHT:
+        lives -= 1
+        enemies.remove(enemy)
 
     player.move_bullets(-bullet_vel)
