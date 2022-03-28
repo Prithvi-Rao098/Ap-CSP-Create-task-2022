@@ -24,17 +24,10 @@ INVADER3 = pygame.transform.scale(
     pygame.image.load(os.path.join("invader.png")), (85, 70))
 
 MC_imge = pygame.transform.rotate(MAINCHARACTER, 90)
-<<<<<<< HEAD
 Bullet_image = pygame.transform.rotate(BULLET, -90)
 Invader1_image = pygame.transform.rotate(BULLET, 90)
 Invader2_image = pygame.transform.rotate(BULLET, 90)
 Invader3_image = pygame.transform.rotate(BULLET, 90)
-=======
-Bullet_image = pygame.transform.rotate(BULLET,-90)
-Invader1_image = pygame.transform.rotate(INVADER1,90)
-Invader2_image = pygame.transform.rotate(INVADER2,90)
-Invader3_image = pygame.transform.rotate(INVADER3,90)
->>>>>>> 0a7111c2d301e1ce838f1573fb4ef24e0b429000
 
 
 # ADD NAME
@@ -72,16 +65,7 @@ class Character:            # parent class for the defenders and invaders
         self.x = x
         self.y = y
         self.health = health
-<<<<<<< HEAD
         self.MC_img = MC_imge  # pass later in the inheritence
-=======
-        self.MC_img = MC_imge             #pass later in the inheritence 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        self.INVADER_img = None
->>>>>>> parent of 7a22173 (try to get invader to work)
->>>>>>> 0a7111c2d301e1ce838f1573fb4ef24e0b429000
         self.mask = pygame.mask.from_surface(self.MC_img)
         self.bullet_img = Bullet_image
         self.bullets = []  # LIST FOR bulletS
@@ -166,7 +150,7 @@ class Enemy(Character):
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
-    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
+    return float(obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None)
 
 
 # initializing the characters and the images
@@ -230,20 +214,8 @@ while run:
         wave_length += 5
 
         for i in range(wave_length):
-<<<<<<< HEAD
             enemy = Enemy(random.randrange(
                 290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-            enemy = Enemy(random.randrange(290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
-=======
-            enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
->>>>>>> parent of a3c1989 (get enemies to collide)
-=======
-            enemy = Enemy(random.randrange(50, WIDTH-800), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
->>>>>>> parent of 7a22173 (try to get invader to work)
->>>>>>> 0a7111c2d301e1ce838f1573fb4ef24e0b429000
             enemies.append(enemy)
 
     for event in pygame.event.get():
