@@ -19,9 +19,9 @@ INVADER3 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png"))
 
 MC_imge = pygame.transform.rotate(MAINCHARACTER, 90)
 Bullet_image = pygame.transform.rotate(BULLET,-90)
-Invader1_image = pygame.transform.rotate(INVADER1,90)
-Invader2_image = pygame.transform.rotate(INVADER2,90)
-Invader3_image = pygame.transform.rotate(INVADER3,90)
+Invader1_image = pygame.transform.rotate(BULLET,90)
+Invader2_image = pygame.transform.rotate(BULLET,90)
+Invader3_image = pygame.transform.rotate(BULLET,90)
 
 
 # ADD NAME
@@ -59,7 +59,6 @@ class Character:            # parent class for the defenders and invaders
         self.y = y
         self.health = health
         self.MC_img = MC_imge             #pass later in the inheritence 
-        self.INVADER_img = None
         self.mask = pygame.mask.from_surface(self.MC_img)
         self.bullet_img = Bullet_image        
         self.bullets = []                         #LIST FOR bulletS
@@ -217,7 +216,7 @@ while run:
         wave_length += 5
         
         for i in range(wave_length):
-            enemy = Enemy(random.randrange(50, WIDTH-800), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+            enemy = Enemy(random.randrange(290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
             enemies.append(enemy)
 
         
