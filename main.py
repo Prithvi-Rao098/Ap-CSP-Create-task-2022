@@ -7,20 +7,20 @@ pygame.font.init()
 pygame.init()
 
 # initilizing the SCREENdow screen
-WIDTH, HEIGHT = 800, 1000
+WIDTH, HEIGHT = 800, 900
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 BACKGROUND = pygame.transform.scale(pygame.image.load(os.path.join("background.jpg")), (WIDTH, HEIGHT))
 MAINCHARACTER = pygame.transform.scale(pygame.image.load(os.path.join("MAINCHARACTER.png")), (55, 50))
 BULLET = pygame.transform.scale(pygame.image.load(os.path.join("bullet.png")), (30, 42))
-INVADER1 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (55, 50))
-INVADER2 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (75, 60))
-INVADER3 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (85, 70))
+INVADER1 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (35, 35))
+INVADER2 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (55, 55))
+INVADER3 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png")), (85, 85))
 
 MC_imge = pygame.transform.rotate(MAINCHARACTER, 90)
 Bullet_image = pygame.transform.rotate(BULLET,-90)
-Invader1_image = pygame.transform.rotate(INVADER1,90)
-Invader2_image = pygame.transform.rotate(INVADER2,90)
-Invader3_image = pygame.transform.rotate(INVADER3,90)
+Invader1_image = pygame.transform.rotate(INVADER1,-90)
+Invader2_image = pygame.transform.rotate(INVADER2,-90)
+Invader3_image = pygame.transform.rotate(INVADER3,-90)
 
 
 # ADD NAME
@@ -28,7 +28,7 @@ pygame.display.set_caption( " !!!@@@@ ----  ENTER NAME LATER  ----@@@@!!!  - Pri
 
 #PARENT CLASSES
 class Bullet:
-    def __init__(self, x, y, img):
+    def __init__(self, x, y, bullet_img):
         self.x = x
         self.y = y
         self.bullet_img = Bullet_image
@@ -57,24 +57,25 @@ class Character:            # parent class for the defenders and invaders
         self.x = x
         self.y = y
         self.health = health
-        self.MC_img = MC_imge             #pass later in the inheritence 
-        self.mask = pygame.mask.from_surface(self.MC_img)
-        self.bullet_img = Bullet_image        
+        self.CHACATER_img = None             #pass later in the inheritence 
+        self.bullet_img = None      
         self.bullets = []                         #LIST FOR bulletS
         self.cool_down_counter = 0
 
     def draw(self, window):
-        window.blit(self.MC_img, (self.x, self.y))
+        window.blit(self.CHACATER_img, (self.x, self.y))
         for bullet in self.bullets:
             bullet.draw(window)
 
-    def move_bullets(self, vel):
+    def move_bullets(self, vel, obj):
         self.cooldown()
         for bullet in self.bullets:
             bullet.move(vel)
             if bullet.off_screen(HEIGHT):
                 self.bullets.remove(bullet)
-
+            elif bullet.collision(obj):
+                obj.health -= 10
+                self.lasers.remove(bullet)
 
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
@@ -89,19 +90,19 @@ class Character:            # parent class for the defenders and invaders
             self.cool_down_counter = 1
 
     def get_width(self):
-        return self.MC_img.get_width()
+        return self.CHACATER_img.get_width()
 
     def get_height(self):
-        return self.MC_img.get_height()
+        return self.CHACATER_img.get_height()
 
 # child classes
 
 class MainCharacter(Character):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
-        self.MC_img = MAINCHARACTER
+        self.CHACATER_img = MC_imge
         self.bullet_img = BULLET
-        self.mask = pygame.mask.from_surface(self.MC_img)
+        self.mask = pygame.mask.from_surface(self.CHACATER_img)
         self.max_health = health
 
     def move_bullets(self, vel):
@@ -117,8 +118,8 @@ class MainCharacter(Character):
         self.healthbar(window)
 
     def healthbar(self, window):
-        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.MC_img.get_height() + 10, self.MC_img.get_width(), 10))
-        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.MC_img.get_height() + 10, self.MC_img.get_width() * (self.health/self.max_health), 10))
+        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.CHACATER_img.get_height() + 10, self.CHACATER_img.get_width(), 10))
+        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.CHACATER_img.get_height() + 10, self.CHACATER_img.get_width() * (self.health/self.max_health), 10))
 
 
 class Enemy(Character):
@@ -131,8 +132,8 @@ class Enemy(Character):
 
     def __init__(self, x, y, type, health=2):
         super().__init__(x,y,health)
-        self.INVADER_img= self.ENEMY_MAP[type]
-        self.mask = pygame.mask.from_surface(self.INVADER_img)
+        self.CHACATER_img= self.ENEMY_MAP[type]
+        self.mask = pygame.mask.from_surface(self.CHACATER_img)
 
     def move(self, vel):
         self.y+= vel
@@ -155,10 +156,10 @@ FPS = 240
 bullet_vel = 15
 level = 0
 lives = 1
-player = Character(375, 900)
+player = MainCharacter(375, 850)
 enemies = []
 bullets = []
-player_vel = 1
+player_vel = 1.2
 enemy_vel = 0.2
 main_font = pygame.font.SysFont("comicsans", 50)
 lost_font = pygame.font.SysFont("comicsans", 70)
@@ -196,10 +197,6 @@ while run:
     clock.tick(FPS)
     redraw_win()
 
-    if len(enemies) == 0:
-        level += 1
-        wave_length += 5
-    
 
     if lives <= 0 or player.health <= 0:
         lost = True
@@ -249,4 +246,4 @@ while run:
             lives -= 1
             enemies.remove(enemy)
 
-    player.move_bullets(-bullet_vel)
+    player.move_bullets(-bullet_vel, enemies)
