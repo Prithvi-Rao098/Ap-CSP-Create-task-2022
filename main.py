@@ -4,7 +4,6 @@ import random
 import math
 pygame.font.init()
 
-
 pygame.init()
 
 # initilizing the SCREENdow screen
@@ -19,9 +18,9 @@ INVADER3 = pygame.transform.scale(pygame.image.load(os.path.join("invader.png"))
 
 MC_imge = pygame.transform.rotate(MAINCHARACTER, 90)
 Bullet_image = pygame.transform.rotate(BULLET,-90)
-Invader1_image = pygame.transform.rotate(BULLET,90)
-Invader2_image = pygame.transform.rotate(BULLET,90)
-Invader3_image = pygame.transform.rotate(BULLET,90)
+Invader1_image = pygame.transform.rotate(INVADER1,90)
+Invader2_image = pygame.transform.rotate(INVADER2,90)
+Invader3_image = pygame.transform.rotate(INVADER3,90)
 
 
 # ADD NAME
