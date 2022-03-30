@@ -51,7 +51,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 25
+    COOLDOWN = 24
     NUM_CLICKED = 20
     def __init__(self, x, y, health=100):
         self.x = x
