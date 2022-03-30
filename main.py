@@ -24,16 +24,19 @@ Invader3_image = pygame.transform.rotate(INVADER3,-90)
 
 
 # ADD NAME
-pygame.display.set_caption( " !!!@@@@ ----  ENTER NAME LATER  ----@@@@!!!  - Prithvi Rao")
+pygame.display.set_caption(
+    " !!!@@@@ ----  ENTER NAME LATER  ----@@@@!!!  - Prithvi Rao")
 
-#PARENT CLASSES
+# PARENT CLASSES
+
+
 class Bullet:
     def __init__(self, x, y, bullet_img):
         self.x = x
         self.y = y
         self.bullet_img = Bullet_image
         self.mask = pygame.mask.from_surface(self.bullet_img)
-    
+
     def move(self, vel):
         self.y += vel
 
@@ -45,8 +48,6 @@ class Bullet:
 
     def collision(self, obj):
         return collide(self, obj)
-
-
 
 
 class Character:            # parent class for the defenders and invaders
@@ -99,6 +100,7 @@ class Character:            # parent class for the defenders and invaders
 
 # child classes
 
+
 class MainCharacter(Character):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
@@ -132,9 +134,9 @@ class MainCharacter(Character):
 class Enemy(Character):
 
     ENEMY_MAP = {
-                "small" : (Invader1_image),
-                "medium" : (Invader2_image),
-                "large" : (Invader3_image)
+        "small": (Invader1_image),
+        "medium": (Invader2_image),
+        "large": (Invader3_image)
     }
 
     def __init__(self, x, y, type, health=20):
@@ -143,18 +145,13 @@ class Enemy(Character):
         self.mask = pygame.mask.from_surface(self.CHACATER_img)
 
     def move(self, vel):
-        self.y+= vel
-
-
-
-
+        self.y += vel
 
 
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
-    return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
-
+    return float(obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None)
 
 
 # initializing the characters and the images
@@ -173,11 +170,11 @@ lost_font = pygame.font.SysFont("comicsans", 70)
 wave_length = 10
 num_loss = 0
 lost = False
-clock = pygame.time.Clock() 
+clock = pygame.time.Clock()
 
 
 def redraw_win():
-    SCREEN.blit(BACKGROUND, (0,0))
+    SCREEN.blit(BACKGROUND, (0, 0))
 
     lives_show = main_font.render(f"lives: {lives}", 1, (0,0,255))
     level_show = main_font.render(f"level: {level}", 1, (255,0,0))
@@ -191,14 +188,10 @@ def redraw_win():
 
     player.draw(SCREEN)
     if lost:
-        lost_label=lost_font.render("YOU LOST !", 1 , (255,0,0))
+        lost_label = lost_font.render("YOU LOST !", 1, (255, 0, 0))
         SCREEN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
-    
     pygame.display.update()
-
-
-
 
 
 while run:
@@ -217,30 +210,30 @@ while run:
         if num_loss > FPS * 3:
             run = False
         else:
-            continue 
+            continue
 
     if len(enemies) == 0:
         level += 1
         wave_length += 8
         
         for i in range(wave_length):
-            enemy = Enemy(random.randrange(290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+            enemy = Enemy(random.randrange(
+                290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
             enemies.append(enemy)
 
-        
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_w] and player.y - player_vel > 0:                                                             #up
+    if keys[pygame.K_w] and player.y - player_vel > 0:  # up
         player.y -= player_vel
 
-    if keys[pygame.K_a] and player.x -player_vel > 0 :                                                             #left
+    if keys[pygame.K_a] and player.x - player_vel > 0:  # left
         player.x -= player_vel
 
-    if keys[pygame.K_d] and player.x +player_vel + player.get_width() < WIDTH:                                     #right
+    if keys[pygame.K_d] and player.x + player_vel + player.get_width() < WIDTH:  # right
         player.x += player_vel
 
     if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:                                  #down
