@@ -52,7 +52,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 25
+    COOLDOWN = 15
     NUM_CLICKED = 20
     def __init__(self, x, y, health=100):
         self.x = x
@@ -156,15 +156,15 @@ def collide(obj1, obj2):
 
 # initializing the characters and the images
 run = True
-FPS = 240
-bullet_vel = 15
+FPS = 60
+bullet_vel = 40
 level = 0
 lives = 1
 player = MainCharacter(375, 850)
 enemies = []
 num_clicked = 20
-player_vel = 1.2    # 1.2
-enemy_vel = 0.2   #0.2
+player_vel = 6    # 1.2
+enemy_vel = 1   #0.2
 main_font = pygame.font.SysFont("comicsans", 50)
 lost_font = pygame.font.SysFont("comicsans", 70)
 wave_length = 10
