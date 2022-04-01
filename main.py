@@ -60,6 +60,7 @@ class Character:            # parent class for the defenders and invaders
 
     COOLDOWN = 15
     NUM_CLICKED = 20
+    NUM_KILLED = 0
 
     def __init__(self, x, y, health=100):
         self.x = x
@@ -83,6 +84,7 @@ class Character:            # parent class for the defenders and invaders
                 self.bullets.remove(bullet)
             elif bullet.collision(obj):
                 obj.health -= 10
+                self.NUM_KILLED += 1
                 self.lasers.remove(bullet)
 
     def cooldown(self):
@@ -125,6 +127,7 @@ class MainCharacter(Character):
                 for obj in objs:
                     if bullet.collision(obj):
                         objs.remove(obj)
+                        self.NUM_KILLED += 1
                         if bullet in self.bullets:
                             self.bullets.remove(bullet)
 
@@ -162,6 +165,13 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 
+def Boss(Character):
+    def __init__(self, x, y, type, health=100):
+        super().__init__(x, y, health)
+        self.CHACATER_img = self.ENEMY_MAP[type]
+        self.mask = pygame.mask.from_surface(self.CHACATER_img)
+
+
 # initializing the characters and the images
 run = True
 FPS = 60
@@ -188,10 +198,13 @@ def redraw_win():
     level_show = main_font.render(f"level: {level}", 1, (255, 0, 0))
     bullets_show = main_font.render(
         f"ammo: {player.NUM_CLICKED}/20", 1, (255, 0, 0))
+    kills_show = main_font.render(
+        f"kills: {player.NUM_KILLED}", 1, (255, 0, 0))
 
     SCREEN.blit(lives_show, (10, 600))
     SCREEN.blit(level_show, (10, 800))
     SCREEN.blit(bullets_show, (10, 700))
+    SCREEN.blit(kills_show, (590, 750))
     for enemy in enemies:
         enemy.draw(SCREEN)
 
