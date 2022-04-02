@@ -38,10 +38,16 @@ pygame.display.set_caption(
 
 class Bullet:
     def __init__(self, x, y, bullet_img):
-        self.x = x
-        self.y = y
+        self.pos = (x,y)
+        mx, my = pygame.mouse.get_pos()
+        self.direction = (mx-x, my-y)
+        length = math.hypot(*self.direction)
         self.bullet_img = Bullet_image
         self.mask = pygame.mask.from_surface(self.bullet_img)
+
+    if length == 0:
+        self.direction = (0, -1)
+
 
     def move(self, vel):
         self.y += vel
@@ -164,12 +170,6 @@ def collide(obj1, obj2):
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
-
-def Boss(Character):
-    def __init__(self, x, y, type, health=100):
-        super().__init__(x, y, health)
-        self.CHACATER_img = self.ENEMY_MAP[type]
-        self.mask = pygame.mask.from_surface(self.CHACATER_img)
 
 
 # initializing the characters and the images
