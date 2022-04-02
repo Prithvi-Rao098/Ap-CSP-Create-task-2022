@@ -12,5 +12,6 @@ https://opengameart.org/content/animated-top-down-survivor-player    #link to ma
 
 https://github.com/nealholt/python_programming_curricula/blob/master/CS1/0550_galaga/pygame_galaga2_shoot_any_direction.py   # help from here
  
+ https://www.youtube.com/watch?v=3DeW-7vbc50 # FOR MULTIDIRECTIONAL SHOOTING
  
 HAVE TO LINK THE MAIN CHARACTER

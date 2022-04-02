@@ -173,114 +173,139 @@ def collide(obj1, obj2):
 
 
 
-# initializing the characters and the images
-run = True
-FPS = 60
-bullet_vel = 60
-level = 0
-lives = 1
-player = MainCharacter(375, 850)
-enemies = []
-num_clicked = 20
-player_vel = 6    # 1.2
-enemy_vel = 1  # 0.2
-main_font = pygame.font.SysFont("comicsans", 50)
-lost_font = pygame.font.SysFont("comicsans", 70)
-wave_length = 10
-num_loss = 0
-lost = False
-clock = pygame.time.Clock()
+def main():
+    run = True
+    FPS = 60
+    bullet_vel = 60
+    level = 0
+    lives = 5
+    player = MainCharacter(375, 850)
+    enemies = []
+    num_clicked = 20
+    player_vel = 6    # 1.2
+    enemy_vel = 1  # 0.2
+    main_font = pygame.font.SysFont("comicsans", 50)
+    lost_font = pygame.font.SysFont("comicsans", 70)
+    wave_length = 10
+    num_loss = 0
+    lost = False
+    clock = pygame.time.Clock()
 
 
-def redraw_win():
-    SCREEN.blit(BACKGROUND, (0, 0))
+    def redraw_win():
+        SCREEN.blit(BACKGROUND, (0, 0))
 
-    lives_show = main_font.render(f"lives: {lives}", 1, (0, 0, 255))
-    level_show = main_font.render(f"level: {level}", 1, (255, 0, 0))
-    bullets_show = main_font.render(
-        f"ammo: {player.NUM_CLICKED}/20", 1, (255, 0, 0))
-    kills_show = main_font.render(
-        f"kills: {player.NUM_KILLED}", 1, (255, 0, 0))
+        lives_show = main_font.render(f"lives: {lives}", 1, (0, 0, 255))
+        level_show = main_font.render(f"level: {level}", 1, (255, 0, 0))
+        bullets_show = main_font.render(
+            f"ammo: {player.NUM_CLICKED}/20", 1, (255, 0, 0))
+        kills_show = main_font.render(
+            f"kills: {player.NUM_KILLED}", 1, (255, 0, 0))
 
-    SCREEN.blit(lives_show, (10, 600))
-    SCREEN.blit(level_show, (10, 800))
-    SCREEN.blit(bullets_show, (10, 700))
-    SCREEN.blit(kills_show, (590, 750))
-    for enemy in enemies:
-        enemy.draw(SCREEN)
+        SCREEN.blit(lives_show, (10, 600))
+        SCREEN.blit(level_show, (10, 800))
+        SCREEN.blit(bullets_show, (10, 700))
+        SCREEN.blit(kills_show, (590, 750))
+        for enemy in enemies:
+            enemy.draw(SCREEN)
 
-    player.draw(SCREEN)
-    if lost:
-        lost_label = lost_font.render("YOU LOST !", 1, (255, 0, 0))
-        SCREEN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
+        player.draw(SCREEN)
+        if lost:
+            lost_label = lost_font.render("YOU LOST !", 1, (255, 0, 0))
+            SCREEN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
-    pygame.display.update()
+        pygame.display.update()
 
 
-while run:
-    clock.tick(FPS)
-    redraw_win()
+    while run:
+        clock.tick(FPS)
+        redraw_win()
 
-    if player.NUM_CLICKED == 0:
-        starttime = pygame.time.get_ticks()
-        reload = False
+        if player.NUM_CLICKED == 0:
+            starttime = pygame.time.get_ticks()
+            reload = False
 
-        if pygame.time.get_ticks() - 2000 >= 2000:
-            reload = True
-            print("reload is true")
+            if pygame.time.get_ticks() - 2000 >= 2000:
+                reload = True
+                print("reload is true")
 
-        if reload == True:
+            if reload == True:
+                player.NUM_CLICKED = 20
+
+        if lives <= 0 or player.health <= 0:
+            lost = True
+            num_loss += 1
+        if lost:
+            if num_loss > FPS * 3:
+                run = False
+            else:
+                continue
+
+        if len(enemies) == 0:
+            level += 1
+            wave_length += 8
+
+            for i in range(wave_length):
+                enemy = Enemy(random.randrange(
+                    290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
+                enemies.append(enemy)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] and player.y - player_vel > 0:  # up
+            player.y -= player_vel
+
+        if keys[pygame.K_a] and player.x - player_vel > 0:  # left
+            player.x -= player_vel
+
+        if keys[pygame.K_d] and player.x + player_vel + player.get_width() < WIDTH:  # right
+            player.x += player_vel
+
+        if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:  # down
+            player.y += player_vel
+
+        if keys[pygame.K_r]:  # down
             player.NUM_CLICKED = 20
 
-    if lives <= 0 or player.health <= 0:
-        lost = True
-        num_loss += 1
-    if lost:
-        if num_loss > FPS * 3:
-            run = False
-        else:
-            continue
+        if keys[pygame.K_SPACE]:       # OR if keys[pygame.K_SPACE]:
+            player.shoot()
 
-    if len(enemies) == 0:
-        level += 1
-        wave_length += 8
+        for enemy in enemies[:]:
+            enemy.move(enemy_vel)
+            if collide(enemy, player):
+                player.health -= 10
+                enemies.remove(enemy)
+            elif enemy.y + enemy.get_height() > HEIGHT:
+                lives -= 1
+                enemies.remove(enemy)
 
-        for i in range(wave_length):
-            enemy = Enemy(random.randrange(
-                290, WIDTH-350), random.randrange(-1500, -100), random.choice(["small", "medium", "large"]))
-            enemies.append(enemy)
+        player.move_bullets(-bullet_vel, enemies)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
+def controls():
+    pass
+def main_menu():
+    title_font = pygame.font.SysFont("impact", 60)
+    run = True
+    while run:
+        SCREEN.blit(BACKGROUND, (0,0))
+        title_label = title_font.render("Press the mouse to begin", 1, (250,0,0))
+        controls_label = title_font.render("Press any key to see the controls", 1(0,250,0))
+        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        SCREEN.blit(controls_label, (WIDTH/2 - 2*title_label.get_width()/3, 350))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main()
+            if event.type == pygame.KEYDOWN:
+                controls()
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w] and player.y - player_vel > 0:  # up
-        player.y -= player_vel
+    pygame.quit()
 
-    if keys[pygame.K_a] and player.x - player_vel > 0:  # left
-        player.x -= player_vel
 
-    if keys[pygame.K_d] and player.x + player_vel + player.get_width() < WIDTH:  # right
-        player.x += player_vel
-
-    if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:  # down
-        player.y += player_vel
-
-    if keys[pygame.K_r]:  # down
-        player.NUM_CLICKED = 20
-
-    if event.type == pygame.MOUSEBUTTONDOWN:       # OR if keys[pygame.K_SPACE]:
-        player.shoot()
-
-    for enemy in enemies[:]:
-        enemy.move(enemy_vel)
-        if collide(enemy, player):
-            player.health -= 10
-            enemies.remove(enemy)
-        elif enemy.y + enemy.get_height() > HEIGHT:
-            lives -= 1
-            enemies.remove(enemy)
-
-    player.move_bullets(-bullet_vel, enemies)
+main_menu()
