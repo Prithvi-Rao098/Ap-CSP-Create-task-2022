@@ -165,12 +165,6 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 
-def Boss(Character):
-    def __init__(self, x, y, type, health=100):
-        super().__init__(x, y, health)
-        self.CHACATER_img = self.ENEMY_MAP[type]
-        self.mask = pygame.mask.from_surface(self.CHACATER_img)
-
 
 # initializing the characters and the images
 run = True

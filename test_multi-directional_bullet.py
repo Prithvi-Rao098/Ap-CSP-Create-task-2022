@@ -37,20 +37,22 @@ pygame.display.set_caption(
 
 
 class Bullet:
-    def __init__(self, x, y, bullet_img):
-        self.pos = (x,y)
-        mx, my = pygame.mouse.get_pos()
-        self.direction = (mx-x, my-y)
-        length = math.hypot(*self.direction)
+    def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
+        self.x = x
+        self.y = y
+        self.bullet_vel = 40
+        angle = math.atan2(mouse_y - y, mouse_x-x)
+        self.dx = math.cos(angle)*bullet_vel
+        self.dy = math.sin(angle)*bullet_vel
+
         self.bullet_img = Bullet_image
         self.mask = pygame.mask.from_surface(self.bullet_img)
 
-    if length == 0:
-        self.direction = (0, -1)
-
-
     def move(self, vel):
-        self.y += vel
+        self.x = self.x + self.dx
+        self.y = self.y + self.dy
+        self.rect.x = int(self.x)
+        self.rect.y = int(self.y)
 
     def draw(self, window):
         window.blit(self.bullet_img, (self.x, self.y))
@@ -101,7 +103,8 @@ class Character:            # parent class for the defenders and invaders
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            bullet = Bullet(self.x, self.y, self.bullet_img)
+            x,y = pygame.mouse.get_pos()
+            bullet = Bullet(self.x, self.y, x, y, 40, self.bullet_img)     #    def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
             self.bullets.append(bullet)
             self.cool_down_counter = 1
             self.NUM_CLICKED -= 1
@@ -175,7 +178,7 @@ def collide(obj1, obj2):
 # initializing the characters and the images
 run = True
 FPS = 60
-bullet_vel = 40
+bullet_vel = 60
 level = 0
 lives = 1
 player = MainCharacter(375, 850)
@@ -266,9 +269,12 @@ while run:
 
     if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:  # down
         player.y += player_vel
+
     if keys[pygame.K_r]:  # down
         player.NUM_CLICKED = 20
+
     if event.type == pygame.MOUSEBUTTONDOWN:
+        x,y = 
         player.shoot()
 
     for enemy in enemies[:]:
