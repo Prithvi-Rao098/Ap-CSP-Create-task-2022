@@ -14,9 +14,9 @@ BACKGROUND = pygame.transform.scale(pygame.image.load(
 MAINCHARACTER = pygame.transform.scale(
     pygame.image.load(os.path.join("MAINCHARACTER.png")), (55, 50))
 BULLET = pygame.transform.scale(
-    pygame.image.load(os.path.join("bullet.png")), (30, 42))
+    pygame.image.load(os.path.join("bullet.png")), (33, 42))
 INVADER1 = pygame.transform.scale(
-    pygame.image.load(os.path.join("invader.png")), (35, 35))
+    pygame.image.load(os.path.join("invader.png")), (39, 39))
 INVADER2 = pygame.transform.scale(
     pygame.image.load(os.path.join("invader.png")), (55, 55))
 INVADER3 = pygame.transform.scale(
@@ -37,14 +37,20 @@ pygame.display.set_caption(
 
 
 class Bullet:
-    def __init__(self, x, y, bullet_img):
+    def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
         self.x = x
         self.y = y
+        self.bullet_vel = 70
+        angle = math.atan2(mouse_y - y, mouse_x-x)
+        self.dx = math.cos(angle)*bullet_vel - 1.6
+        self.dy = math.sin(angle)*bullet_vel - 1.6
+
         self.bullet_img = Bullet_image
         self.mask = pygame.mask.from_surface(self.bullet_img)
 
     def move(self, vel):
-        self.y += vel
+        self.x = self.x + self.dx
+        self.y = self.y + self.dy
 
     def draw(self, window):
         window.blit(self.bullet_img, (self.x, self.y))
@@ -58,7 +64,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 20
+    COOLDOWN = 7
     NUM_CLICKED = 20
     NUM_KILLED = 0
 
@@ -95,13 +101,14 @@ class Character:            # parent class for the defenders and invaders
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            bullet = Bullet(self.x, self.y, self.bullet_img)
+            x,y = pygame.mouse.get_pos()
+            bullet = Bullet(self.x, self.y, x, y, 40, self.bullet_img)     #    def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
             self.bullets.append(bullet)
             self.cool_down_counter = 1
             self.NUM_CLICKED -= 1
 
     def get_width(self):
-        return self.CHACATER_img.get_width()
+        return self.CHACATER_img.get_width() + 290
 
     def get_height(self):
         return self.CHACATER_img.get_height()
@@ -169,7 +176,7 @@ def collide(obj1, obj2):
 # initializing the characters and the images
 run = True
 FPS = 60
-bullet_vel = 40
+bullet_vel = 60
 level = 0
 lives = 1
 player = MainCharacter(375, 850)
@@ -260,9 +267,11 @@ while run:
 
     if keys[pygame.K_s] and player.y + player_vel + player.get_height() < HEIGHT:  # down
         player.y += player_vel
+
     if keys[pygame.K_r]:  # down
         player.NUM_CLICKED = 20
-    if event.type == pygame.MOUSEBUTTONDOWN:
+
+    if event.type == pygame.MOUSEBUTTONDOWN:       # OR if keys[pygame.K_SPACE]:
         player.shoot()
 
     for enemy in enemies[:]:
