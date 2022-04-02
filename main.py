@@ -286,23 +286,58 @@ def main():
         player.move_bullets(-bullet_vel, enemies)
 
 def controls():
-    pass
+    FPS = 60
+    run = True
+    main_font = pygame.font.SysFont("comicsans", 50)
+    clock = pygame.time.Clock()
+
+    def redraw_win():
+
+        SCREEN.blit(BACKGROUND, (0, 0))
+
+        move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
+        move_down = main_font.render(f"Button to move down : s", 1, (0, 255, 0))
+        move_right = main_font.render(f"Button to move up : d", 1, (0, 255, 0))
+        move_left = main_font.render(f"Button to move up : a", 1, (0, 255, 0))
+        reload = main_font.render(f"Button to reload : r", 1, (0, 255, 0))
+        shoot = main_font.render(f"Button to move shoot : SPACE", 1, (0, 255, 0))
+        aim = main_font.render(f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
+
+        SCREEN.blit(move_up, (90, 350))
+        SCREEN.blit(move_down, (90, 400))
+        SCREEN.blit(move_right, (90, 450))
+        SCREEN.blit(move_left, (90, 500))
+        SCREEN.blit(reload, (90, 550))
+        SCREEN.blit(shoot, (900, 600))
+        SCREEN.blit(aim, (0, 800))
+
+        pygame.display.update()
+    while run:
+        clock.tick(FPS)
+        redraw_win()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+
 def main_menu():
     title_font = pygame.font.SysFont("impact", 60)
     run = True
+    pygame.event.get()
     while run:
         SCREEN.blit(BACKGROUND, (0,0))
         title_label = title_font.render("Press the mouse to begin", 1, (250,0,0))
-        controls_label = title_font.render("Press any key to see the controls", 1(0,250,0))
+        controls_label = title_font.render("Press left arrow key to see the controls", 1,(0,250,0))
         SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
-        SCREEN.blit(controls_label, (WIDTH/2 - 2*title_label.get_width()/3, 350))
+        SCREEN.blit(controls_label, (WIDTH/1.3 - title_label.get_width(), 500))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 main()
-            if event.type == pygame.KEYDOWN:
+            if event.type == pygame.K_r:
                 controls()
 
     pygame.quit()
