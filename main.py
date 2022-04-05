@@ -64,7 +64,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 7
+    COOLDOWN = 15
     NUM_CLICKED = 20
     NUM_KILLED = 0
 
