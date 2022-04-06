@@ -106,7 +106,7 @@ class Character:            # parent class for the defenders and invaders
             elif bullet.collision(obj):
                 obj.health -= 10
                 self.NUM_KILLED += 1
-                self.bulletswwwwwwwwwwwwww.remove(bullet)
+                self.bullets.remove(bullet)
 
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
