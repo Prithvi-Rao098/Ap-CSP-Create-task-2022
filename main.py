@@ -46,7 +46,7 @@ Invader3_image = pygame.transform.rotate(INVADER3, -90)
 
 # ADD NAME
 pygame.display.set_caption(
-    " !!!@@@@ ----  ENTER NAME LATER  ----@@@@!!!  - Prithvi Rao")
+    " PIXEL GUN 2-D  - Prithvi Rao")
 
 # PARENT CLASSES
 
@@ -79,7 +79,7 @@ class Bullet:
 
 class Character:            # parent class for the defenders and invaders
 
-    COOLDOWN = 7
+    COOLDOWN = 15
     NUM_CLICKED = 20
     NUM_KILLED = 0
 
