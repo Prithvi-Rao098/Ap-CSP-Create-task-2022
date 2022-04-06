@@ -1,3 +1,18 @@
+####################################################
+#                  Pixel Gun 2-D                   #
+#  By: Prithvi Rao                                 #
+#  Teacher: Mr. Millard                            #
+#  School: American High                           #
+#  Class: AP Computer Science Principles           #
+#
+#
+#
+#
+#
+#
+#
+
+
 import pygame
 import os
 import random
@@ -91,7 +106,7 @@ class Character:            # parent class for the defenders and invaders
             elif bullet.collision(obj):
                 obj.health -= 10
                 self.NUM_KILLED += 1
-                self.lasers.remove(bullet)
+                self.bulletswwwwwwwwwwwwww.remove(bullet)
 
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
@@ -101,8 +116,9 @@ class Character:            # parent class for the defenders and invaders
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            x,y = pygame.mouse.get_pos()
-            bullet = Bullet(self.x, self.y, x, y, 40, self.bullet_img)     #    def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
+            x, y = pygame.mouse.get_pos()
+            # def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
+            bullet = Bullet(self.x, self.y, x, y, 40, self.bullet_img)
             self.bullets.append(bullet)
             self.cool_down_counter = 1
             self.NUM_CLICKED -= 1
@@ -172,7 +188,6 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 
-
 def main():
     run = True
     FPS = 60
@@ -190,7 +205,6 @@ def main():
     num_loss = 0
     lost = False
     clock = pygame.time.Clock()
-
 
     def redraw_win():
         SCREEN.blit(BACKGROUND, (0, 0))
@@ -215,7 +229,6 @@ def main():
             SCREEN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
-
 
     while run:
         clock.tick(FPS)
@@ -285,6 +298,7 @@ def main():
 
         player.move_bullets(-bullet_vel, enemies)
 
+
 def controls():
     FPS = 60
     run = True
@@ -296,12 +310,15 @@ def controls():
         SCREEN.blit(BACKGROUND, (0, 0))
 
         move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
-        move_down = main_font.render(f"Button to move down : s", 1, (0, 255, 0))
+        move_down = main_font.render(
+            f"Button to move down : s", 1, (0, 255, 0))
         move_right = main_font.render(f"Button to move up : d", 1, (0, 255, 0))
         move_left = main_font.render(f"Button to move up : a", 1, (0, 255, 0))
         reload = main_font.render(f"Button to reload : r", 1, (0, 255, 0))
-        shoot = main_font.render(f"Button to move shoot : SPACE", 1, (0, 255, 0))
-        aim = main_font.render(f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
+        shoot = main_font.render(
+            f"Button to move shoot : SPACE", 1, (0, 255, 0))
+        aim = main_font.render(
+            f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
 
         SCREEN.blit(move_up, (90, 350))
         SCREEN.blit(move_down, (90, 400))
@@ -321,14 +338,17 @@ def controls():
                 running = False
                 pygame.quit()
 
+
 def main_menu():
     title_font = pygame.font.SysFont("impact", 60)
     run = True
     pygame.event.get()
     while run:
-        SCREEN.blit(BACKGROUND, (0,0))
-        title_label = title_font.render("Press the mouse to begin", 1, (250,0,0))
-        controls_label = title_font.render("Press left arrow key to see the controls", 1,(0,250,0))
+        SCREEN.blit(BACKGROUND, (0, 0))
+        title_label = title_font.render(
+            "Press the mouse to begin", 1, (250, 0, 0))
+        controls_label = title_font.render(
+            "Press left arrow key to see the controls", 1, (0, 250, 0))
         SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
         SCREEN.blit(controls_label, (WIDTH/1.3 - title_label.get_width(), 500))
         pygame.display.update()
