@@ -14,7 +14,44 @@
 #                                                                                                                               #
 #  Desciption - of classes and functions:                                                                                       #
 #                                                                                                                               #
-#       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                                                                       #
+#       Classes:                                                                                                                #
+#           --> Bullet                                                                                                          #
+#                   The class of Bullet will all the player to shoot the bullet. It will create the image and handles off       #
+#                   screen and corner cases. This class will also alow the uset to shoot in any direction with respect to       #
+#                   the mouse position.                                                                                         #
+#                                                                                                                               #
+#           --> Character                                                                                                       #
+#                   The class Character is a parent class for both the player and the indvaders. It handles the images for      #
+#                   both character classes shooting, moving the bullets, health, collisions, and initial conditions.            #
+#                                                                                                                               #
+#           --> MainCharacter                                                                                                   #
+#                   This class is the Maincharacter (the movable person controlled by the user) and is a child class of         #
+#                   the class Character. This class hanldes the bullets and where it goes. It handles bullet corner cases.      #
+#                   In addition, it adds a heatlth bar below the character to notify the user the health of their character.    #
+#                                                                                                                               #
+#           --> Enemy                                                                                                           #
+#                   This class is for the invaders that fall from the top of the street and is a child class for the Character  #
+#                   class. It handles the images for the invaders and initializes the dictionary for the different sized        #
+#                   invaders. It makes them move and handles the collsions.                                                     #
+#                                                                                                                               #
+#       Functions:                                                                                                              #
+#            --> collide                                                                                                        #
+#                   This collide function is used to handle the collsions between two object. This includes bullet to           #
+#                   character and charcter to character. It is called into the classes.                                         #
+#                                                                                                                               #
+#            --> main_menu                                                                                                      #
+#                   This function is used prior to the actual game function. It acts as a main menu page which allows the       #
+#                   user to start his/her game when they are ready to play. This page will prompt you press a mousekey to       #
+#                   start the game. It wull also show the use the controls of the game so they know how to play.                #
+#                                                                                                                               #
+#            --> main                                                                                                           #
+#                   This is the main function that is called by the main screen funtion. Its role is to run the actual game.    #
+#                   It redraws the screen based on the number of FPS. It also takes the user input and uses it as commands      #
+#                   to move the character in game. It is used for kill counts, ammunition, and the HUD items on the screen.     #
+#                   Overall this just creats a legible user unterface that the player can use to see what they are doing in     #
+#                   game.                                                                                                       #
+#                                                                                                                               #
+# LINKS:                                                                                                                        #
 #                                                                                                                               #
 #  # https: // www.pinterest.com/pin/160088961739053448/  # background                                                          #
 #                                                                                                                               #
@@ -22,14 +59,14 @@
 #                                                                                                                               #
 #  # https://opengameart.org/content/animated-top-down-survivor-player    #link to main character                               #
 #                                                                                                                               #
-#  # https://github.com/nealholt/python_programming_curricula/blob/master/CS1/0550_galaga/pygame_galaga2_shoot_any_direction.py #   
-#     # help for multi directional shooting                                                                                     #      
+#  # https://github.com/nealholt/python_programming_curricula/blob/master/CS1/0550_galaga/pygame_galaga2_shoot_any_direction.py #
+#     # help for multi directional shooting                                                                                     #
 #                                                                                                                               #
 #  # https://www.youtube.com/watch?v=3DeW-7vbc50 # more help for multi directional shooting                                     #
 #                                                                                                                               #
 #  # https://www.youtube.com/watch?v=Q-__8Xw9KTM # over all structure and I got some help for some of the game algorithms       #
-#
-#
+#                                                                                                                               #
+#################################################################################################################################
 
 
 import pygame
@@ -68,8 +105,8 @@ pygame.display.set_caption(
 
 # PARENT CLASSES
 
-# the class of Bullet will all the player to shoot the bullet. It will create the image and handles off screen
-# and corner cases. This class will also alow the uset to shoot in any direction with respect to the mouse position
+# takes the the mouse x and y positions and uses them to load the bullet image on the screen. It moves the bullet with the given
+# bullet vel.
 class Bullet:
     def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
         self.x = x
@@ -96,8 +133,8 @@ class Bullet:
         return collide(self, obj)
 
 
-# The class Character is a parent class for both the player and the indvaders. It handles the images for both character classes
-# shooting, moving the bullets, health, collisions, and initial conditions.
+# This is the parent class for the maincharacter and the zombie. It has all the underlying features of both like cooldowns,
+# collsions, and position. It inputs information like x and y position and health and passes it to the child classes.
 class Character:
 
     COOLDOWN = 15
@@ -152,9 +189,9 @@ class Character:
 
 # CHILD CLASSES
 
-# This class is the Maincharacter (the movable person controlled by the user) and is a child class of the class Character.
-# This class hanldes the bullets and where it goes. It handles bullet corner cases. In addition, it adds a heatlth bar below the
-# the character to notify the user the health of their character.
+# This is for the main character. It takes in the initial starting position of the person and displays it on the screen.
+# He gives the charactr a health and looks for collisions. Also draws the healthbar. It inputs the information from the parent
+# class and uses them to identify the maincharacter.
 class MainCharacter(Character):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
@@ -187,9 +224,11 @@ class MainCharacter(Character):
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.CHACATER_img.get_height() +
                          10, self.CHACATER_img.get_width() * (self.health/self.max_health), 10))
 
-# This class is for the invaders that fall from the top of the street and is a child class for the Character class.
-# It handles the images for the invaders and initializes the dictionary for the different sized invaders. It
-# makes them move and handles the collsions.
+# This class takes info from the parent class and adds a dictionary to allow for the mutlple sized zombies to spawn at random.
+# It allow spawns them in at diffent locations within a perameter. It takes these paremeters and displays the enemy onto the
+# screen
+
+
 class Enemy(Character):
 
     ENEMY_MAP = {
@@ -206,15 +245,18 @@ class Enemy(Character):
     def move(self, vel):
         self.y += vel
 
-# This collide function is used to handle the collsions between two object. This includes bullet to character and
-# charcter to character. It is called into the classes.
+# This function takes two objects and checks if they have an overlap. It them returns true or false based off the result.
+
+
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
-# This function is used prior to the actual game function. It acts as a main menu page which allows the user to start his/her game when they are ready to play. This page will prompt you 
-# press a mousekey to start the game. It wull also show the use the controls of the game so they know how to play. 
+# This function is used prior to the actual game function. It takes the mousekey press as a form of input and uses that to excicute
+# the actual game function.
+
+
 def main_menu():
     title_font = pygame.font.SysFont("impact", 75)
     run = True
@@ -225,7 +267,6 @@ def main_menu():
         SCREEN.blit(BACKGROUND, (0, 0))
         title_label = title_font.render(
             "Press the mouse to begin", 1, (250, 0, 0))
-
 
         move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
         move_down = main_font.render(
@@ -257,9 +298,8 @@ def main_menu():
     pygame.quit()
 
 
-# This is the main function that is called by the main screen funtion. Its role is to run the actual game. It redraws the screen
-# based on the number of FPS. It also takes the user input and uses it as commands to move the character in game. It is used of kill counts,
-# ammunition, and the HUD items on the screen. Overall this just creats a legible user unterface that the player can use to see what they are doing in game.
+# This is the main function that is called by the main screen funtion. It allows program to actually run into a window. It takes the
+# user inputs and uses them to exicute the code to move the charcter in game.
 def main():
     run = True
     FPS = 60
@@ -369,6 +409,7 @@ def main():
                 enemies.remove(enemy)
 
         player.move_bullets(-bullet_vel, enemies)
+
 
 # call the main function so that it actually runs
 main_menu()
