@@ -6,10 +6,10 @@
 #  Class: AP Computer Science Principles
 #
 #  Description - of game:
-#       Pixel Gun 2-d is a pixelated third person shooter originated from the ideas of Space invaders. The main              #
-#       character, Rob, is tasked to save the Pixel City from flesh eating zombies. The player can move around the street to #
-#       shoot and eliminate the invaders. He is also given the ability to shoot in all directions to ensure the              #
-#       safety of the citizens of Pixel City. The zombies invade in waves and Rob has to survive long enough to eliminate all#
+#       Pixel Gun 2-d is a pixelated third person shooter originated from the ideas of Space invaders. The main                 #
+#       character, Rob, is tasked to save the Pixel City from flesh eating zombies. The player can move around the street to    #
+#       shoot and eliminate the invaders. He is also given the ability to shoot in all directions to ensure the                 #
+#       safety of the citizens of Pixel City. The zombies invade in waves and Rob has to survive long enough to eliminate all   #
 #       of them.
 #
 #  Desciption - of classes and functions:
@@ -51,8 +51,6 @@ Invader1_image = pygame.transform.rotate(INVADER1, -90)
 Invader2_image = pygame.transform.rotate(INVADER2, -90)
 Invader3_image = pygame.transform.rotate(INVADER3, -90)
 
-
-# ADD NAME
 pygame.display.set_caption(
     " PIXEL GUN 2-D  - Prithvi Rao")
 
@@ -181,8 +179,6 @@ class MainCharacter(Character):
 # This class is for the invaders that fall from the top of the street and is a child class for the Character class.
 # It handles the images for the invaders and initializes the dictionary for the different sized invaders. It
 # makes them move and handles the collsions.
-
-
 class Enemy(Character):
 
     ENEMY_MAP = {
@@ -201,40 +197,58 @@ class Enemy(Character):
 
 # This collide function is used to handle the collsions between two object. This includes bullet to character and
 # charcter to character. It is called into the classes.
-
-
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
-
+# This function is used prior to the actual game function. It acts as a main menu page which allows the user to start his/her game when they are ready to play. This page will prompt you 
+# press a mousekey to start the game. It wull also show the use the controls of the game so they know how to play. 
 def main_menu():
-    title_font = pygame.font.SysFont("impact", 60)
+    title_font = pygame.font.SysFont("impact", 75)
     run = True
+    main_font = pygame.font.SysFont("comicsans", 25)
+
     pygame.event.get()
     while run:
         SCREEN.blit(BACKGROUND, (0, 0))
         title_label = title_font.render(
             "Press the mouse to begin", 1, (250, 0, 0))
-        controls_label = title_font.render(
-            "Press left arrow key to see the controls", 1, (0, 250, 0))
-        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
-        SCREEN.blit(controls_label, (WIDTH/1.3 - title_label.get_width(), 500))
+
+
+        move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
+        move_down = main_font.render(
+            f"Button to move down : s", 1, (0, 255, 0))
+        move_right = main_font.render(f"Button to move up : d", 1, (0, 255, 0))
+        move_left = main_font.render(f"Button to move up : a", 1, (0, 255, 0))
+        reload = main_font.render(f"Button to reload : r", 1, (0, 255, 0))
+        shoot = main_font.render(
+            f"Button to move shoot : SPACE", 1, (0, 255, 0))
+        aim = main_font.render(
+            f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
+
+        SCREEN.blit(move_up, (90, 350))
+        SCREEN.blit(move_down, (90, 400))
+        SCREEN.blit(move_right, (90, 450))
+        SCREEN.blit(move_left, (90, 500))
+        SCREEN.blit(reload, (90, 550))
+        SCREEN.blit(shoot, (900, 600))
+        SCREEN.blit(aim, (30, 600))
+        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 100))
+
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 main()
-            if event.type == pygame.K_r:
-                controls()
 
     pygame.quit()
 
 
 # This is the main function that is called by the main screen funtion. Its role is to run the actual game. It redraws the screen
-# based on the number of FPR
+# based on the number of FPS. It also takes the user input and uses it as commands to move the character in game. It is used of kill counts,
+# ammunition, and the HUD items on the screen. Overall this just creats a legible user unterface that the player can use to see what they are doing in game.
 def main():
     run = True
     FPS = 60
@@ -344,46 +358,6 @@ def main():
                 enemies.remove(enemy)
 
         player.move_bullets(-bullet_vel, enemies)
-
-
-def controls():
-    FPS = 60
-    run = True
-    main_font = pygame.font.SysFont("comicsans", 50)
-    clock = pygame.time.Clock()
-
-    def redraw_win():
-
-        SCREEN.blit(BACKGROUND, (0, 0))
-
-        move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
-        move_down = main_font.render(
-            f"Button to move down : s", 1, (0, 255, 0))
-        move_right = main_font.render(f"Button to move up : d", 1, (0, 255, 0))
-        move_left = main_font.render(f"Button to move up : a", 1, (0, 255, 0))
-        reload = main_font.render(f"Button to reload : r", 1, (0, 255, 0))
-        shoot = main_font.render(
-            f"Button to move shoot : SPACE", 1, (0, 255, 0))
-        aim = main_font.render(
-            f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
-
-        SCREEN.blit(move_up, (90, 350))
-        SCREEN.blit(move_down, (90, 400))
-        SCREEN.blit(move_right, (90, 450))
-        SCREEN.blit(move_left, (90, 500))
-        SCREEN.blit(reload, (90, 550))
-        SCREEN.blit(shoot, (900, 600))
-        SCREEN.blit(aim, (0, 800))
-
-        pygame.display.update()
-    while run:
-        clock.tick(FPS)
-        redraw_win()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
 
 
 main_menu()
