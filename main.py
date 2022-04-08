@@ -1,11 +1,11 @@
-####################################################
-#                                                  Pixel Gun 2-D
-#  By: Prithvi Rao
-#  Teacher: Mr. Millard
-#  School: American High
-#  Class: AP Computer Science Principles
-#
-#  Description - of game:
+#################################################################################################################################
+#                                                       Pixel Gun 2-D                                                           #
+#  By: Prithvi Rao                                                                                                              #
+#  Teacher: Mr. Millard                                                                                                         #
+#  School: American High                                                                                                        #
+#  Class: AP Computer Science Principles                                                                                        #
+#                                                                                                                               #
+#  Description - of game:                                                                                                       #
 #       Pixel Gun 2-d is a pixelated third person shooter originated from the ideas of Space invaders. The main                 #
 #       character, Rob, is tasked to save the Pixel City from flesh eating zombies. The player can move around the street to    #
 #       shoot and eliminate the invaders. He is also given the ability to shoot in all directions to ensure the                 #
@@ -359,5 +359,5 @@ def main():
 
         player.move_bullets(-bullet_vel, enemies)
 
-
+# call the main function so that it actually runs
 main_menu()
