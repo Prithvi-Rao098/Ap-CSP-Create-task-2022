@@ -271,7 +271,7 @@ while run:
     if keys[pygame.K_r]:  # down
         player.NUM_CLICKED = 20
 
-    if event.type == pygame.MOUSEBUTTONDOWN:       # OR if keys[pygame.K_SPACE]:
+    if keys[pygame.K_SPACE]:       # OR if keys[pygame.K_SPACE]:
         player.shoot()
 
     for enemy in enemies[:]:
