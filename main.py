@@ -10,13 +10,24 @@
 #       character, Rob, is tasked to save the Pixel City from flesh eating zombies. The player can move around the street to    #
 #       shoot and eliminate the invaders. He is also given the ability to shoot in all directions to ensure the                 #
 #       safety of the citizens of Pixel City. The zombies invade in waves and Rob has to survive long enough to eliminate all   #
-#       of them.
-#
-#  Desciption - of classes and functions:
-#
-#
-#
-#
+#       of them.                                                                                                                #
+#                                                                                                                               #
+#  Desciption - of classes and functions:                                                                                       #
+#                                                                                                                               #
+#       !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                                                                                       #
+#                                                                                                                               #
+#  # https: // www.pinterest.com/pin/160088961739053448/  # background                                                          #
+#                                                                                                                               #
+#  # https://opengameart.org/content/animated-top-down-zombie  # link to invaders                                               #
+#                                                                                                                               #
+#  # https://opengameart.org/content/animated-top-down-survivor-player    #link to main character                               #
+#                                                                                                                               #
+#  # https://github.com/nealholt/python_programming_curricula/blob/master/CS1/0550_galaga/pygame_galaga2_shoot_any_direction.py #   
+#     # help for multi directional shooting                                                                                     #      
+#                                                                                                                               #
+#  # https://www.youtube.com/watch?v=3DeW-7vbc50 # more help for multi directional shooting                                     #
+#                                                                                                                               #
+#  # https://www.youtube.com/watch?v=Q-__8Xw9KTM # over all structure and I got some help for some of the game algorithms       #
 #
 #
 
