@@ -1,3 +1,26 @@
+####################################################
+#                                                  Pixel Gun 2-D
+#  By: Prithvi Rao
+#  Teacher: Mr. Millard
+#  School: American High
+#  Class: AP Computer Science Principles
+#
+#  Description - of game:
+#       Pixel Gun 2-d is a pixelated third person shooter originated from the ideas of Space invaders. The main              #
+#       character, Rob, is tasked to save the Pixel City from flesh eating zombies. The player can move around the street to #
+#       shoot and eliminate the invaders. He is also given the ability to shoot in all directions to ensure the              #
+#       safety of the citizens of Pixel City. The zombies invade in waves and Rob has to survive long enough to eliminate all#
+#       of them.
+#
+#  Desciption - of classes and functions:
+#
+#
+#
+#
+#
+#
+
+
 import pygame
 import os
 import random
@@ -31,11 +54,13 @@ Invader3_image = pygame.transform.rotate(INVADER3, -90)
 
 # ADD NAME
 pygame.display.set_caption(
-    " !!!@@@@ ----  ENTER NAME LATER  ----@@@@!!!  - Prithvi Rao")
+    " PIXEL GUN 2-D  - Prithvi Rao")
+
 
 # PARENT CLASSES
 
-
+# the class of Bullet will all the player to shoot the bullet. It will create the image and handles off screen
+# and corner cases. This class will also alow the uset to shoot in any direction with respect to the mouse position
 class Bullet:
     def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
         self.x = x
@@ -62,9 +87,11 @@ class Bullet:
         return collide(self, obj)
 
 
-class Character:            # parent class for the defenders and invaders
+# The class Character is a parent class for both the player and the indvaders. It handles the images for both character classes
+# shooting, moving the bullets, health, collisions, and initial conditions.
+class Character:
 
-    COOLDOWN = 7
+    COOLDOWN = 15
     NUM_CLICKED = 20
     NUM_KILLED = 0
 
@@ -72,9 +99,9 @@ class Character:            # parent class for the defenders and invaders
         self.x = x
         self.y = y
         self.health = health
-        self.CHACATER_img = None  # pass later in the inheritence
+        self.CHACATER_img = None
         self.bullet_img = None
-        self.bullets = []  # LIST FOR bulletS
+        self.bullets = []
         self.cool_down_counter = 0
 
     def draw(self, window):
@@ -91,7 +118,7 @@ class Character:            # parent class for the defenders and invaders
             elif bullet.collision(obj):
                 obj.health -= 10
                 self.NUM_KILLED += 1
-                self.lasers.remove(bullet)
+                self.bullets.remove(bullet)
 
     def cooldown(self):
         if self.cool_down_counter >= self.COOLDOWN:
@@ -101,8 +128,8 @@ class Character:            # parent class for the defenders and invaders
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            x,y = pygame.mouse.get_pos()
-            bullet = Bullet(self.x, self.y, x, y, 40, self.bullet_img)     #    def __init__(self, x, y, mouse_x, mouse_y, bullet_vel, bullet_img):
+            x, y = pygame.mouse.get_pos()
+            bullet = Bullet(self.x, self.y, x, y, 40, self.bullet_img)
             self.bullets.append(bullet)
             self.cool_down_counter = 1
             self.NUM_CLICKED -= 1
@@ -113,9 +140,12 @@ class Character:            # parent class for the defenders and invaders
     def get_height(self):
         return self.CHACATER_img.get_height()
 
-# child classes
 
+# CHILD CLASSES
 
+# This class is the Maincharacter (the movable person controlled by the user) and is a child class of the class Character.
+# This class hanldes the bullets and where it goes. It handles bullet corner cases. In addition, it adds a heatlth bar below the
+# the character to notify the user the health of their character.
 class MainCharacter(Character):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
@@ -148,6 +178,10 @@ class MainCharacter(Character):
         pygame.draw.rect(window, (0, 255, 0), (self.x, self.y + self.CHACATER_img.get_height() +
                          10, self.CHACATER_img.get_width() * (self.health/self.max_health), 10))
 
+# This class is for the invaders that fall from the top of the street and is a child class for the Character class.
+# It handles the images for the invaders and initializes the dictionary for the different sized invaders. It
+# makes them move and handles the collsions.
+
 
 class Enemy(Character):
 
@@ -165,6 +199,9 @@ class Enemy(Character):
     def move(self, vel):
         self.y += vel
 
+# This collide function is used to handle the collsions between two object. This includes bullet to character and
+# charcter to character. It is called into the classes.
+
 
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
@@ -172,7 +209,32 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 
+def main_menu():
+    title_font = pygame.font.SysFont("impact", 60)
+    run = True
+    pygame.event.get()
+    while run:
+        SCREEN.blit(BACKGROUND, (0, 0))
+        title_label = title_font.render(
+            "Press the mouse to begin", 1, (250, 0, 0))
+        controls_label = title_font.render(
+            "Press left arrow key to see the controls", 1, (0, 250, 0))
+        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        SCREEN.blit(controls_label, (WIDTH/1.3 - title_label.get_width(), 500))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main()
+            if event.type == pygame.K_r:
+                controls()
 
+    pygame.quit()
+
+
+# This is the main function that is called by the main screen funtion. Its role is to run the actual game. It redraws the screen
+# based on the number of FPR
 def main():
     run = True
     FPS = 60
@@ -190,7 +252,6 @@ def main():
     num_loss = 0
     lost = False
     clock = pygame.time.Clock()
-
 
     def redraw_win():
         SCREEN.blit(BACKGROUND, (0, 0))
@@ -215,7 +276,6 @@ def main():
             SCREEN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
-
 
     while run:
         clock.tick(FPS)
@@ -285,6 +345,7 @@ def main():
 
         player.move_bullets(-bullet_vel, enemies)
 
+
 def controls():
     FPS = 60
     run = True
@@ -296,12 +357,15 @@ def controls():
         SCREEN.blit(BACKGROUND, (0, 0))
 
         move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
-        move_down = main_font.render(f"Button to move down : s", 1, (0, 255, 0))
+        move_down = main_font.render(
+            f"Button to move down : s", 1, (0, 255, 0))
         move_right = main_font.render(f"Button to move up : d", 1, (0, 255, 0))
         move_left = main_font.render(f"Button to move up : a", 1, (0, 255, 0))
         reload = main_font.render(f"Button to reload : r", 1, (0, 255, 0))
-        shoot = main_font.render(f"Button to move shoot : SPACE", 1, (0, 255, 0))
-        aim = main_font.render(f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
+        shoot = main_font.render(
+            f"Button to move shoot : SPACE", 1, (0, 255, 0))
+        aim = main_font.render(
+            f"Place the cursor over the enemy and press the spacebar to shoot", 1, (0, 255, 0))
 
         SCREEN.blit(move_up, (90, 350))
         SCREEN.blit(move_down, (90, 400))
@@ -320,27 +384,6 @@ def controls():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
-
-def main_menu():
-    title_font = pygame.font.SysFont("impact", 60)
-    run = True
-    pygame.event.get()
-    while run:
-        SCREEN.blit(BACKGROUND, (0,0))
-        title_label = title_font.render("Press the mouse to begin", 1, (250,0,0))
-        controls_label = title_font.render("Press left arrow key to see the controls", 1,(0,250,0))
-        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
-        SCREEN.blit(controls_label, (WIDTH/1.3 - title_label.get_width(), 500))
-        pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                main()
-            if event.type == pygame.K_r:
-                controls()
-
-    pygame.quit()
 
 
 main_menu()
