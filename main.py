@@ -1,6 +1,6 @@
 #################################################################################################################################
 #                                                       Pixel Gun 2-D                                                           #
-#  By: Prithvi Rao                                                                                                              #
+#                                                                                                                               #
 #  Teacher: Mr. Millard                                                                                                         #
 #  School: American High                                                                                                        #
 #  Class: AP Computer Science Principles                                                                                        #
@@ -100,7 +100,7 @@ Invader2_image = pygame.transform.rotate(INVADER2, -90)
 Invader3_image = pygame.transform.rotate(INVADER3, -90)
 
 pygame.display.set_caption(
-    " PIXEL GUN 2-D  - Prithvi Rao")
+    " PIXEL GUN 2-D  ")
 
 
 # PARENT CLASSES
