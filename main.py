@@ -332,13 +332,6 @@ def controls():
     pygame.quit()
 
 
-
-
-
-
-
-
-
 # This is the main function that is called by the main screen funtion. It allows program to actually run into a window. It takes the
 # user inputs and uses them to exicute the code to move the charcter in game.
 def main():
