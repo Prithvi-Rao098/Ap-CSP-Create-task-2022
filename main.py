@@ -16,39 +16,43 @@
 #                                                                                                                               #
 #       Classes:                                                                                                                #
 #           --> Bullet                                                                                                          #
-#                   The class of Bullet will all the player to shoot the bullet. It will create the image and handles off       #
-#                   screen and corner cases. This class will also alow the uset to shoot in any direction with respect to       #
+#                   The class of Bullet will allow the player to shoot the bullet. It will create the image and handles off     #
+#                   screen and corner cases. This class will also allow the user to shoot in any direction with respect to      #
 #                   the mouse position.                                                                                         #
 #                                                                                                                               #
 #           --> Character                                                                                                       #
-#                   The class Character is a parent class for both the player and the indvaders. It handles the images for      #
+#                   The class Character is a parent class for both the player and the invaders. It handles the images for       #
 #                   both character classes shooting, moving the bullets, health, collisions, and initial conditions.            #
 #                                                                                                                               #
 #           --> MainCharacter                                                                                                   #
 #                   This class is the Maincharacter (the movable person controlled by the user) and is a child class of         #
-#                   the class Character. This class hanldes the bullets and where it goes. It handles bullet corner cases.      #
-#                   In addition, it adds a heatlth bar below the character to notify the user the health of their character.    #
+#                   the class Character. This class handles the bullets and where it goes. It handles bullet corner cases.      #
+#                   In addition, it adds a health bar below the character to notify the user the health of their character.     #
 #                                                                                                                               #
 #           --> Enemy                                                                                                           #
 #                   This class is for the invaders that fall from the top of the street and is a child class for the Character  #
 #                   class. It handles the images for the invaders and initializes the dictionary for the different sized        #
-#                   invaders. It makes them move and handles the collsions.                                                     #
+#                   invaders. It makes them move and handles the collisions.                                                    #
 #                                                                                                                               #
 #       Functions:                                                                                                              #
 #            --> collide                                                                                                        #
-#                   This collide function is used to handle the collsions between two object. This includes bullet to           #
-#                   character and charcter to character. It is called into the classes.                                         #
+#                   This collide function is used to handle the collisions between two object. This includes bullet to          #
+#                   character and character to character. It is called into the classes.                                        #
 #                                                                                                                               #
 #            --> main_menu                                                                                                      #
 #                   This function is used prior to the actual game function. It acts as a main menu page which allows the       #
 #                   user to start his/her game when they are ready to play. This page will prompt you press a mousekey to       #
-#                   start the game. It wull also show the use the controls of the game so they know how to play.                #
+#                   start the game.                                                                                             #
 #                                                                                                                               #
+#            --> controls                                                                                                       #
+#                    The function is a sub part to the main menu function. It allows the user to view the controls of the game  #
+#                    before actually playing. It provides information like what keys to press to do the various actions you are #
+#                    able to do in game. This includes movement keys and the ability to shoot in the specified direction.       #
 #            --> main                                                                                                           #
-#                   This is the main function that is called by the main screen funtion. Its role is to run the actual game.    #
+#                   This is the main function that is called by the main screen function. Its role is to run the actual game.    #
 #                   It redraws the screen based on the number of FPS. It also takes the user input and uses it as commands      #
 #                   to move the character in game. It is used for kill counts, ammunition, and the HUD items on the screen.     #
-#                   Overall this just creats a legible user unterface that the player can use to see what they are doing in     #
+#                   Overall this just creates a legible user unterface that the player can use to see what they are doing in     #
 #                   game.                                                                                                       #
 #                                                                                                                               #
 # LINKS:                                                                                                                        #
@@ -254,20 +258,51 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 # This function is used prior to the actual game function. It takes the mousekey press as a form of input and uses that to excicute
-# the actual game function.
+# the actual game function or to go to the control panel.
 
 
 def main_menu():
     title_font = pygame.font.SysFont("impact", 75)
     run = True
-    main_font = pygame.font.SysFont("comicsans", 25)
+    main_font = pygame.font.SysFont("comicsans", 40)
 
     pygame.event.get()
     while run:
         SCREEN.blit(BACKGROUND, (0, 0))
         title_label = title_font.render(
             "Press the mouse to begin", 1, (250, 0, 0))
+        controls_label = main_font.render(
+            "Press the keyboard to see the controls", 1, (250, 0, 100))
+        SCREEN.blit(controls_label, (45, 390))
+        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 100))
 
+
+
+        keys = pygame.key.get_pressed()
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                main()
+            if keys[pygame.K_SPACE]:
+                controls()
+
+    pygame.quit()
+
+
+
+# This function is used prior to the actual game function. It takes the spacebar as a form of input and uses that to start 
+# the actual game.
+def controls():
+    title_font = pygame.font.SysFont("impact", 75)
+    run = True
+    main_font = pygame.font.SysFont("comicsans", 25)
+    pygame.event.get()
+
+    while run:
+        SCREEN.blit(BACKGROUND, (0, 0))
+        start_game = main_font.render(f"PRESS THE SPACEBAR TO START THE GAME", 1, (0, 255, 0))
         move_up = main_font.render(f"Button to move up : w", 1, (0, 255, 0))
         move_down = main_font.render(
             f"Button to move down : s", 1, (0, 255, 0))
@@ -286,16 +321,22 @@ def main_menu():
         SCREEN.blit(reload, (90, 550))
         SCREEN.blit(shoot, (900, 600))
         SCREEN.blit(aim, (30, 600))
-        SCREEN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 100))
-
+        SCREEN.blit(start_game, (WIDTH/2 - start_game.get_width()/2, 100))
+        keys = pygame.key.get_pressed()
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if keys[pygame.K_SPACE]:
                 main()
-
     pygame.quit()
+
+
+
+
+
+
+
 
 
 # This is the main function that is called by the main screen funtion. It allows program to actually run into a window. It takes the
