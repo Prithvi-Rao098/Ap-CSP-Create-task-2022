@@ -49,10 +49,10 @@
 #                    before actually playing. It provides information like what keys to press to do the various actions you are #
 #                    able to do in game. This includes movement keys and the ability to shoot in the specified direction.       #
 #            --> main                                                                                                           #
-#                   This is the main function that is called by the main screen function. Its role is to run the actual game.    #
+#                   This is the main function that is called by the main screen function. Its role is to run the actual game.   #
 #                   It redraws the screen based on the number of FPS. It also takes the user input and uses it as commands      #
 #                   to move the character in game. It is used for kill counts, ammunition, and the HUD items on the screen.     #
-#                   Overall this just creates a legible user unterface that the player can use to see what they are doing in     #
+#                   Overall this just creates a legible user unterface that the player can use to see what they are doing in    #
 #                   game.                                                                                                       #
 #                                                                                                                               #
 # LINKS:                                                                                                                        #
