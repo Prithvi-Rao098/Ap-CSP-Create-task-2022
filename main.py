@@ -59,9 +59,11 @@
 #                                                                                                                               #
 #  # https: // www.pinterest.com/pin/160088961739053448/  # background                                                          #
 #                                                                                                                               #
-#  # https://opengameart.org/content/animated-top-down-zombie  # link to invaders                                               #
+#  # https://opengameart.org/content/animated-top-down-zombie  # image for invaders                                             #
 #                                                                                                                               #
-#  # https://opengameart.org/content/animated-top-down-survivor-player    #link to main character                               #
+#  # https://opengameart.org/content/animated-top-down-survivor-player    # image for main character                            #
+#                                                                                                                               #
+#  # http://pixelartmaker.com/art/9d5278583d9297d        # image for the bullet                                                 #
 #                                                                                                                               #
 #  # https://github.com/nealholt/python_programming_curricula/blob/master/CS1/0550_galaga/pygame_galaga2_shoot_any_direction.py #
 #     # help for multi directional shooting                                                                                     #
