@@ -1,9 +1,6 @@
 #################################################################################################################################
 #                                                       Pixel Gun 2-D                                                           #
 #                                                                                                                               #
-#  Teacher: Mr. Millard                                                                                                         #
-#  School: American High                                                                                                        #
-#  Class: AP Computer Science Principles                                                                                        #
 #                                                                                                                               #
 #  Description - of game:                                                                                                       #
 #       Pixel Gun 2-d is a pixelated third person shooter originated from the ideas of Space invaders. The main                 #
